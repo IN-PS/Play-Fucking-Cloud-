@@ -1,0 +1,776 @@
+<title>UNTILED Cloud Drive</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: dark product launch — full-bleed studio hero, then a living-room scene, anatomy callouts, flow, UI mock, spec sheet. Single deliberate dark look. */
+:root {
+  color-scheme: dark;
+  --void: #050706;          /* preto profundo */
+  --shell: #0d110f;         /* superfícies */
+  --shell-2: #141a17;
+  --line: #1f2a25;
+  --fg: #e9f1ec;
+  --muted: #8a9a92;
+  --neon: #39ff88;          /* verde neon UNTILED */
+  --neon-soft: rgba(57,255,136,.14);
+  --holo: #8fe9ff;          /* holográfico discreto */
+  --metal: #b8c2bd;
+  --f-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+}
+html { background: var(--void); }
+body { background: var(--void); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+section { padding-block: clamp(64px, 9vw, 120px); }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 600; line-height: 1.15; }
+h3 { font-size: 1rem; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--neon); }
+.lede { color: var(--muted); max-width: 62ch; font-size: 1.05rem; }
+.stack { display: grid; gap: 18px; }
+
+/* ---------- HERO ---------- */
+.hero { position: relative; overflow: hidden; padding-block: clamp(40px, 6vw, 80px) clamp(56px, 8vw, 96px);
+  background:
+    radial-gradient(60% 55% at 62% 52%, rgba(57,255,136,.10), transparent 70%),
+    radial-gradient(40% 40% at 20% 10%, rgba(143,233,255,.06), transparent 70%),
+    linear-gradient(180deg, #070a09 0%, var(--void) 100%);
+}
+.hero::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(180deg, transparent, var(--void)); pointer-events: none; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.wordmark { font-family: var(--f-display); font-weight: 800; letter-spacing: .32em; font-size: .95rem; color: var(--fg); }
+.wordmark span { color: var(--neon); text-shadow: 0 0 12px rgba(57,255,136,.6); }
+.tag { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); border: 1px solid var(--line); padding: 6px 10px; border-radius: 999px; letter-spacing: .08em; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 4vw, 56px); align-items: center; margin-top: clamp(36px, 6vw, 72px); position: relative; z-index: 1; }
+.hero h1 { font-size: clamp(2.3rem, 5.6vw, 4.6rem); font-weight: 800; line-height: .98; letter-spacing: -.02em; }
+.hero h1 em { font-style: normal; color: var(--neon); text-shadow: 0 0 28px rgba(57,255,136,.45); display: block; }
+.slogan { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.05rem, 1.8vw, 1.3rem); color: var(--fg); margin-top: 20px; }
+.slogan b { color: var(--neon); font-weight: 600; }
+.hero .lede { margin-top: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.chip { font-family: var(--f-mono); font-size: .74rem; padding: 6px 10px; border-radius: 6px; background: var(--shell); border: 1px solid var(--line); color: var(--fg); }
+.chip i { font-style: normal; color: var(--neon); }
+.render { position: relative; max-width: 100%; }
+.render svg { width: 100%; height: auto; display: block; }
+.render .caption { position: absolute; right: 2%; bottom: 0; font-family: var(--f-mono); font-size: .68rem; color: var(--muted); letter-spacing: .1em; }
+@keyframes float { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-10px) rotate(-6deg); } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .72; } }
+.drive-float { transform-origin: 50% 50%; transform: rotate(-6deg); animation: float 7s ease-in-out infinite; transform-box: fill-box; }
+.logo-glow { animation: pulse 3.8s ease-in-out infinite; }
+
+/* ---------- SCENE ---------- */
+.scene-sec { background: linear-gradient(180deg, var(--void), #070b09 40%, var(--void)); }
+.scene-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.room { position: relative; margin-top: 40px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+  background:
+    radial-gradient(70% 60% at 50% 30%, rgba(57,255,136,.08), transparent 70%),
+    linear-gradient(180deg, #0a0e0c 0%, #060807 62%, #0b0f0d 62.2%, #040605 100%);
+  padding: clamp(20px, 4vw, 48px) clamp(12px, 4vw, 48px) clamp(16px, 3vw, 32px);
+}
+.tv { position: relative; width: min(860px, 100%); margin: 0 auto; aspect-ratio: 16 / 9.4; max-width: 100%;
+  background: #020302; border-radius: 10px; padding: 1.2%; box-shadow: 0 0 0 1px #1c2420, 0 40px 120px -20px rgba(57,255,136,.28), 0 30px 60px rgba(0,0,0,.8); }
+.tv canvas { width: 100%; height: 100%; display: block; border-radius: 4px; background: #000; }
+.tv-stand { width: 22%; height: 10px; margin: 0 auto; background: linear-gradient(180deg, #1a201d, #0b0e0c); border-radius: 0 0 6px 6px; }
+.console-row { position: relative; width: min(620px, 92%); margin: clamp(18px, 3vw, 34px) auto 0; }
+.console-row svg { width: 100%; height: auto; display: block; overflow: visible; }
+.reflection { height: 30px; margin-top: -2px; background: radial-gradient(50% 100% at 50% 0, rgba(57,255,136,.18), transparent 70%); }
+.scene-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; margin-top: 18px; font-family: var(--f-mono); font-size: .72rem; color: var(--muted); }
+.scene-notes b { color: var(--neon); font-weight: 600; }
+
+/* ---------- ANATOMY ---------- */
+.anatomy { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: center; margin-top: 40px; }
+.anatomy-render { background: radial-gradient(70% 70% at 50% 50%, #101613, var(--void)); border: 1px solid var(--line); border-radius: 18px; padding: 12px; }
+.anatomy-render svg { width: 100%; height: auto; display: block; }
+.parts { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.part { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.part .k { font-family: var(--f-mono); color: var(--neon); font-size: .8rem; padding-top: 2px; }
+.part p { color: var(--muted); font-size: .93rem; margin-top: 4px; }
+
+/* ---------- FLOW ---------- */
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; margin-top: 44px; position: relative; }
+.node { position: relative; padding: 22px 18px 22px 0; }
+.node::before { content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 1px; background: linear-gradient(90deg, var(--neon), rgba(57,255,136,.15)); }
+.node .dot { position: relative; width: 24px; height: 24px; border-radius: 50%; background: var(--void); border: 1px solid var(--neon); display: grid; place-items: center; font-family: var(--f-mono); font-size: .66rem; color: var(--neon); box-shadow: 0 0 14px rgba(57,255,136,.35); }
+.node h3 { margin-top: 18px; font-size: .95rem; }
+.node p { color: var(--muted); font-size: .88rem; margin-top: 6px; }
+.callout { margin-top: 36px; border: 1px solid var(--line); border-left: 2px solid var(--holo); border-radius: 10px; padding: 18px 20px; background: var(--shell); max-width: 820px; }
+.callout .eyebrow { color: var(--holo); }
+.callout p { color: var(--muted); margin-top: 8px; font-size: .93rem; }
+
+/* ---------- UI MOCK ---------- */
+.ui { margin-top: 40px; border-radius: 16px; border: 1px solid var(--line); background: linear-gradient(160deg, #0b100e, #060908); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.ui-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+.ui-top .wordmark { font-size: .8rem; }
+.profiles { display: flex; gap: 8px; align-items: center; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-mono); font-size: .7rem; font-weight: 600; border: 1px solid var(--line); background: var(--shell-2); color: var(--muted); }
+.avatar.on { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 12px rgba(57,255,136,.4); }
+.net { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+.net b { color: var(--neon); font-weight: 600; }
+.ui-body { display: grid; grid-template-columns: 180px minmax(0, 1fr); }
+.cats { border-right: 1px solid var(--line); padding: 16px 10px; display: grid; gap: 4px; align-content: start; }
+.cat { appearance: none; background: none; border: 0; text-align: left; color: var(--muted); font-family: var(--f-body); font-size: .9rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+.cat span { font-family: var(--f-mono); font-size: .72rem; opacity: .7; }
+.cat:hover { color: var(--fg); background: var(--shell-2); }
+.cat[aria-pressed="true"] { color: var(--void); background: var(--neon); font-weight: 700; }
+.cat[aria-pressed="true"] span { opacity: .8; }
+.cat:focus-visible, .ui button:focus-visible { outline: 2px solid var(--holo); outline-offset: 2px; }
+.library { padding: 18px; min-width: 0; }
+.feature { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 21 / 8; max-width: 100%; border: 1px solid var(--line); }
+.feature .art { position: absolute; inset: 0; }
+.feature .meta { position: absolute; left: 18px; bottom: 16px; right: 18px; display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.feature h3 { font-size: clamp(1rem, 2.4vw, 1.5rem); font-weight: 800; letter-spacing: .04em; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
+.feature small { font-family: var(--f-mono); font-size: .7rem; color: var(--holo); display: block; margin-bottom: 4px; letter-spacing: .1em; }
+.play { appearance: none; border: 0; cursor: pointer; background: var(--neon); color: var(--void); font-family: var(--f-display); font-weight: 600; font-size: .78rem; padding: 10px 16px; border-radius: 8px; box-shadow: 0 0 24px rgba(57,255,136,.45); }
+.row-title { display: flex; justify-content: space-between; align-items: baseline; margin: 20px 0 10px; }
+.row-title h3 { font-size: .85rem; }
+.row-title span { font-family: var(--f-mono); font-size: .7rem; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--shell); }
+.tile .cover { aspect-ratio: 3 / 4; position: relative; }
+.tile .cover b { position: absolute; left: 10px; right: 10px; bottom: 10px; font-family: var(--f-display); font-size: .78rem; font-weight: 600; line-height: 1.15; text-shadow: 0 2px 8px rgba(0,0,0,.9); }
+.tile .info { display: flex; justify-content: space-between; gap: 6px; padding: 8px 10px; font-family: var(--f-mono); font-size: .66rem; color: var(--muted); }
+.tile .info .q { color: var(--neon); }
+.ui-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 20px; border-top: 1px solid var(--line); font-family: var(--f-mono); font-size: .7rem; color: var(--muted); }
+.btn-glyph { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--muted); font-size: .6rem; margin-right: 6px; vertical-align: -4px; }
+
+/* ---------- SPECS ---------- */
+.spec-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: clamp(28px, 4vw, 64px); margin-top: 40px; align-items: start; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 460px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child th, tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-mono); font-weight: 400; font-size: .74rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; width: 34%; }
+td { font-variant-numeric: tabular-nums; }
+td .n { color: var(--neon); font-family: var(--f-mono); }
+.box { display: grid; gap: 10px; }
+.box-item { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.box-item b { font-family: var(--f-mono); color: var(--neon); font-size: .8rem; min-width: 2.4rem; }
+
+/* ---------- OUTRO ---------- */
+.outro { text-align: left; border-top: 1px solid var(--line); background: radial-gradient(50% 80% at 85% 100%, rgba(57,255,136,.1), transparent 70%), var(--void); }
+.outro h2 { font-size: clamp(2rem, 5.4vw, 4.2rem); font-weight: 800; line-height: 1.02; max-width: 16ch; }
+.outro h2 em { font-style: normal; color: var(--neon); text-shadow: 0 0 28px rgba(57,255,136,.4); }
+.legal { margin-top: 48px; font-size: .78rem; color: var(--muted); max-width: 90ch; line-height: 1.6; }
+
+@media (max-width: 900px) {
+  .hero-grid, .scene-head, .anatomy, .spec-grid { grid-template-columns: minmax(0, 1fr); }
+  .render { order: -1; }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .node { padding: 0 0 22px 40px; }
+  .node::before { left: 11px; right: auto; top: 24px; bottom: 0; width: 1px; height: auto; background: linear-gradient(180deg, var(--neon), rgba(57,255,136,.15)); }
+  .node .dot { position: absolute; left: 0; top: 0; }
+  .node h3 { margin-top: 0; }
+  .ui-body { grid-template-columns: minmax(0, 1fr); }
+  .cats { border-right: 0; border-bottom: 1px solid var(--line); display: flex; overflow-x: auto; padding: 10px; }
+  .cat { white-space: nowrap; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drive-float, .logo-glow { animation: none; }
+}
+</style>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="wordmark">UN<span>T</span>ILED</div>
+      <div class="tag">CONCEITO DE PRODUTO · NOV 2026</div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Next-gen gaming · Cloud access key</p>
+        <h1 style="margin-top:14px">UNTILED <em>CLOUD DRIVE</em></h1>
+        <p class="slogan">A próxima geração <b>cabe no seu bolso.</b></p>
+        <p class="lede">Um acessório USB para PS4 que dá acesso a jogos modernos por streaming, através de serviços de cloud gaming compatíveis. O processamento pesado acontece nos servidores; o Cloud Drive cuida da interface, da conexão e da sua conta.</p>
+        <div class="chips">
+          <span class="chip"><i>●</i> Até 4K quando suportado</span>
+          <span class="chip"><i>●</i> DualShock 4</span>
+          <span class="chip"><i>●</i> Saves na nuvem</span>
+          <span class="chip"><i>●</i> USB 3.2 Gen 1</span>
+        </div>
+      </div>
+
+      <div class="render" aria-label="Renderização do UNTILED Cloud Drive: pendrive preto fosco com logotipo verde neon e aletas metálicas">
+        <svg viewBox="0 0 720 440" role="img">
+          <defs>
+            <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a302d"/>
+              <stop offset=".08" stop-color="#151917"/>
+              <stop offset=".55" stop-color="#0b0e0d"/>
+              <stop offset="1" stop-color="#030404"/>
+            </linearGradient>
+            <linearGradient id="bodySheen" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+              <stop offset=".35" stop-color="#fff" stop-opacity=".06"/>
+              <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#eef2f0"/>
+              <stop offset=".3" stop-color="#9aa39f"/>
+              <stop offset=".55" stop-color="#5d6561"/>
+              <stop offset=".8" stop-color="#c3cbc7"/>
+              <stop offset="1" stop-color="#6b736f"/>
+            </linearGradient>
+            <linearGradient id="fin" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#3b423f"/>
+              <stop offset=".45" stop-color="#a9b2ae"/>
+              <stop offset="1" stop-color="#2a302d"/>
+            </linearGradient>
+            <linearGradient id="seam" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#39ff88" stop-opacity="0"/>
+              <stop offset=".2" stop-color="#39ff88"/>
+              <stop offset=".8" stop-color="#39ff88"/>
+              <stop offset="1" stop-color="#39ff88" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#8fe9ff" stop-opacity=".0"/>
+              <stop offset=".4" stop-color="#8fe9ff" stop-opacity=".35"/>
+              <stop offset=".6" stop-color="#c7a6ff" stop-opacity=".25"/>
+              <stop offset="1" stop-color="#39ff88" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="floorGlow" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#39ff88" stop-opacity=".45"/>
+              <stop offset="1" stop-color="#39ff88" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow" x="-50%" y="-200%" width="200%" height="500%">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+            <pattern id="grain" width="4" height="4" patternUnits="userSpaceOnUse">
+              <rect width="4" height="4" fill="#000" fill-opacity="0"/>
+              <circle cx="1" cy="1" r=".5" fill="#fff" fill-opacity=".035"/>
+              <circle cx="3" cy="2.5" r=".4" fill="#000" fill-opacity=".25"/>
+            </pattern>
+            <clipPath id="bodyClip"><rect x="170" y="140" width="430" height="140" rx="34"/></clipPath>
+          </defs>
+
+          <!-- floor -->
+          <ellipse cx="380" cy="372" rx="300" ry="34" fill="url(#floorGlow)" filter="url(#soft)"/>
+          <ellipse cx="385" cy="360" rx="230" ry="14" fill="#000" opacity=".85" filter="url(#soft)"/>
+
+          <g class="drive-float">
+            <!-- USB connector -->
+            <rect x="70" y="176" width="112" height="68" rx="4" fill="url(#metal)"/>
+            <rect x="70" y="176" width="112" height="68" rx="4" fill="none" stroke="#2c322f" stroke-width="1.5"/>
+            <rect x="88" y="190" width="18" height="12" rx="1.5" fill="#1b1f1d"/>
+            <rect x="130" y="190" width="18" height="12" rx="1.5" fill="#1b1f1d"/>
+            <rect x="88" y="218" width="60" height="5" rx="1" fill="#2f6b47" opacity=".9"/>
+            <line x1="72" y1="181" x2="180" y2="181" stroke="#fff" stroke-opacity=".7" stroke-width="1.2"/>
+
+            <!-- main body -->
+            <rect x="170" y="140" width="430" height="140" rx="34" fill="url(#body)"/>
+            <g clip-path="url(#bodyClip)">
+              <rect x="170" y="140" width="430" height="140" fill="url(#grain)"/>
+              <rect x="170" y="140" width="430" height="140" fill="url(#bodySheen)"/>
+              <!-- faceted split, console-inspired but UNTILED's own: diagonal cut -->
+              <path d="M170 140 H430 L392 280 H170 Z" fill="#000" fill-opacity=".22"/>
+              <path d="M430 140 L392 280" stroke="#39ff88" stroke-opacity=".55" stroke-width="1.4" filter="url(#glow)"/>
+              <!-- heatsink fins -->
+              <g>
+                <rect x="462" y="140" width="138" height="140" fill="#0a0c0b"/>
+                <g fill="url(#fin)">
+                  <rect x="470" y="150" width="7" height="120" rx="2"/>
+                  <rect x="484" y="150" width="7" height="120" rx="2"/>
+                  <rect x="498" y="150" width="7" height="120" rx="2"/>
+                  <rect x="512" y="150" width="7" height="120" rx="2"/>
+                  <rect x="526" y="150" width="7" height="120" rx="2"/>
+                  <rect x="540" y="150" width="7" height="120" rx="2"/>
+                  <rect x="554" y="150" width="7" height="120" rx="2"/>
+                  <rect x="568" y="150" width="7" height="120" rx="2"/>
+                  <rect x="582" y="150" width="7" height="120" rx="2"/>
+                </g>
+                <rect x="462" y="140" width="138" height="140" fill="url(#holo)" opacity=".5"/>
+              </g>
+              <!-- top highlight -->
+              <rect x="170" y="140" width="430" height="6" fill="#fff" fill-opacity=".09"/>
+            </g>
+            <!-- edge rim -->
+            <rect x="170.75" y="140.75" width="428.5" height="138.5" rx="33.5" fill="none" stroke="#3a423e" stroke-width="1.5"/>
+            <!-- neon seam along bottom -->
+            <rect x="200" y="272" width="250" height="2.2" rx="1" fill="url(#seam)" filter="url(#glow)"/>
+
+            <!-- logo -->
+            <g class="logo-glow">
+              <text x="200" y="222" font-family="Unbounded, Arial Black, sans-serif" font-weight="800" font-size="34" letter-spacing="6" fill="#39ff88" filter="url(#glow)">UNTILED</text>
+              <text x="202" y="246" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="3.5" fill="#8a9a92">CLOUD DRIVE · UCD-01</text>
+            </g>
+            <!-- status LED -->
+            <circle cx="438" cy="164" r="3.4" fill="#39ff88" filter="url(#glow)"/>
+            <!-- lanyard loop -->
+            <path d="M600 194 h18 a16 16 0 0 1 0 32 h-18" fill="none" stroke="url(#metal)" stroke-width="6"/>
+          </g>
+
+          <!-- holographic HUD marks -->
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#8fe9ff" opacity=".8">
+            <line x1="520" y1="110" x2="560" y2="70" stroke="#8fe9ff" stroke-opacity=".5"/>
+            <line x1="560" y1="70" x2="680" y2="70" stroke="#8fe9ff" stroke-opacity=".5"/>
+            <text x="566" y="62">AL 6063 · ALETAS</text>
+            <line x1="120" y1="290" x2="96" y2="330" stroke="#8fe9ff" stroke-opacity=".5"/>
+            <line x1="96" y1="330" x2="20" y2="330" stroke="#8fe9ff" stroke-opacity=".5"/>
+            <text x="20" y="346">USB-A 3.2 G1</text>
+          </g>
+        </svg>
+        <span class="caption">RENDER · 58 × 21 × 9 MM · 14 G</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= SCENE ================= -->
+<section class="scene-sec">
+  <div class="wrap">
+    <div class="scene-head">
+      <div class="stack">
+        <p class="eyebrow">Na sala</p>
+        <h2>Conecte na frente do console. Jogue o que a nuvem roda.</h2>
+      </div>
+      <p class="lede">O Cloud Drive entra na porta USB frontal do PS4 e abre a interface UNTILED na TV. Na tela, <strong>VANTA PROTOCOL</strong>, um jogo fictício de nova geração transmitido de um servidor remoto. Você joga com o mesmo DualShock 4 de sempre.</p>
+    </div>
+
+    <div class="room">
+      <div class="tv"><canvas id="game" width="1280" height="720" aria-label="Cena do jogo fictício VANTA PROTOCOL: cidade noturna com chuva e luzes verdes, e HUD de streaming"></canvas></div>
+      <div class="tv-stand"></div>
+
+      <div class="console-row" aria-label="Console genérico preto com o UNTILED Cloud Drive conectado na porta USB frontal">
+        <svg viewBox="0 0 620 110" role="img">
+          <defs>
+            <linearGradient id="cTop" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#20262318"/>
+              <stop offset="0" stop-color="#1d2220"/>
+              <stop offset="1" stop-color="#0c0f0e"/>
+            </linearGradient>
+            <linearGradient id="cFront" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#121614"/>
+              <stop offset="1" stop-color="#050606"/>
+            </linearGradient>
+            <filter id="g2" x="-50%" y="-300%" width="200%" height="700%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- console slab (generic, no brand marks) -->
+          <path d="M40 22 L580 22 L600 52 L20 52 Z" fill="url(#cTop)"/>
+          <path d="M20 52 L600 52 L590 78 L30 78 Z" fill="url(#cFront)"/>
+          <path d="M260 22 L246 78" stroke="#000" stroke-width="5" opacity=".7"/>
+          <line x1="40" y1="22.6" x2="580" y2="22.6" stroke="#fff" stroke-opacity=".12"/>
+          <line x1="22" y1="52.5" x2="598" y2="52.5" stroke="#3a423e" stroke-opacity=".6"/>
+          <!-- power strip light (neutral white, not a brand color) -->
+          <path d="M252 30 L248 48" stroke="#cfe" stroke-opacity=".25" stroke-width="2"/>
+          <!-- USB ports -->
+          <rect x="300" y="60" width="20" height="7" rx="1" fill="#000" stroke="#2f3633"/>
+          <rect x="330" y="60" width="20" height="7" rx="1" fill="#000" stroke="#2f3633"/>
+          <!-- UNTILED drive plugged into first port -->
+          <g>
+            <rect x="296" y="66" width="28" height="36" rx="5" fill="#0d100f" stroke="#2c3430"/>
+            <rect x="301" y="76" width="18" height="2" fill="#39ff88" filter="url(#g2)"/>
+            <rect x="301" y="82" width="18" height="1.2" fill="#39ff88" opacity=".5"/>
+            <circle cx="310" cy="95" r="1.8" fill="#39ff88" filter="url(#g2)"/>
+          </g>
+          <!-- feet & shadow -->
+          <ellipse cx="310" cy="96" rx="290" ry="6" fill="#000" opacity=".6"/>
+        </svg>
+        <div class="reflection"></div>
+      </div>
+
+      <div class="scene-notes">
+        <span><b>●</b> Stream ativo · 1080p60 · 22 ms</span>
+        <span>Jogo fictício para fins de apresentação</span>
+        <span>Console ilustrado sem marcas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ANATOMY ================= -->
+<section>
+  <div class="wrap">
+    <div class="stack">
+      <p class="eyebrow">Design físico</p>
+      <h2>Pequeno, denso e feito para ficar à vista.</h2>
+      <p class="lede">A linguagem vem dos consoles atuais: planos facetados, um corte diagonal e luz como assinatura. A forma, a luz e os materiais são da UNTILED.</p>
+    </div>
+
+    <div class="anatomy">
+      <div class="anatomy-render">
+        <svg viewBox="0 0 560 360" role="img" aria-label="Vista superior explodida do Cloud Drive com cinco pontos numerados">
+          <defs>
+            <linearGradient id="aBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2220"/><stop offset="1" stop-color="#070908"/></linearGradient>
+            <linearGradient id="aMetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe5e2"/><stop offset=".5" stop-color="#6c7470"/><stop offset="1" stop-color="#b6beba"/></linearGradient>
+            <filter id="g3" x="-50%" y="-300%" width="200%" height="700%"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- top shell, lifted -->
+          <g transform="translate(0,-18)">
+            <rect x="120" y="70" width="320" height="96" rx="26" fill="url(#aBody)" stroke="#2f3834"/>
+            <text x="150" y="128" font-family="Unbounded, Arial Black, sans-serif" font-weight="800" font-size="24" letter-spacing="4" fill="#39ff88" filter="url(#g3)">UNTILED</text>
+            <g fill="#7c8681">
+              <rect x="352" y="80" width="5" height="76" rx="2"/><rect x="363" y="80" width="5" height="76" rx="2"/><rect x="374" y="80" width="5" height="76" rx="2"/><rect x="385" y="80" width="5" height="76" rx="2"/><rect x="396" y="80" width="5" height="76" rx="2"/><rect x="407" y="80" width="5" height="76" rx="2"/><rect x="418" y="80" width="5" height="76" rx="2"/>
+            </g>
+            <path d="M310 70 L290 166" stroke="#39ff88" stroke-opacity=".6" stroke-width="1.2"/>
+          </g>
+          <!-- PCB layer -->
+          <g>
+            <rect x="140" y="184" width="290" height="62" rx="6" fill="#0f2a1c" stroke="#1f5a3a"/>
+            <rect x="170" y="196" width="46" height="38" rx="3" fill="#121614" stroke="#39ff88" stroke-opacity=".5"/>
+            <text x="193" y="219" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#39ff88">SoC</text>
+            <rect x="232" y="200" width="40" height="30" rx="2" fill="#151a18"/>
+            <text x="252" y="219" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#8a9a92">64GB</text>
+            <rect x="290" y="204" width="34" height="22" rx="2" fill="#151a18"/>
+            <text x="307" y="219" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#8a9a92">Wi-Fi</text>
+            <path d="M340 194 h70 M340 236 h70 M410 194 v42" stroke="#8fe9ff" stroke-opacity=".55" fill="none"/>
+            <rect x="96" y="196" width="46" height="38" rx="2" fill="url(#aMetal)"/>
+          </g>
+          <!-- base -->
+          <g transform="translate(0,18)">
+            <rect x="120" y="250" width="320" height="64" rx="22" fill="#0a0c0b" stroke="#262e2a"/>
+            <rect x="150" y="300" width="200" height="2" rx="1" fill="#39ff88" filter="url(#g3)"/>
+          </g>
+          <!-- callouts -->
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#39ff88">
+            <g><circle cx="220" cy="40" r="11" fill="#050706" stroke="#39ff88"/><text x="220" y="44" text-anchor="middle">1</text><line x1="220" y1="51" x2="220" y2="78" stroke="#39ff88" stroke-opacity=".5"/></g>
+            <g><circle cx="470" cy="70" r="11" fill="#050706" stroke="#39ff88"/><text x="470" y="74" text-anchor="middle">2</text><line x1="459" y1="74" x2="425" y2="88" stroke="#39ff88" stroke-opacity=".5"/></g>
+            <g><circle cx="470" cy="215" r="11" fill="#050706" stroke="#39ff88"/><text x="470" y="219" text-anchor="middle">3</text><line x1="459" y1="215" x2="432" y2="215" stroke="#39ff88" stroke-opacity=".5"/></g>
+            <g><circle cx="60" cy="215" r="11" fill="#050706" stroke="#39ff88"/><text x="60" y="219" text-anchor="middle">4</text><line x1="71" y1="215" x2="96" y2="215" stroke="#39ff88" stroke-opacity=".5"/></g>
+            <g><circle cx="470" cy="330" r="11" fill="#050706" stroke="#39ff88"/><text x="470" y="334" text-anchor="middle">5</text><line x1="459" y1="328" x2="352" y2="320" stroke="#39ff88" stroke-opacity=".5"/></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="parts">
+        <div class="part"><span class="k">01</span><div><h3>Logotipo iluminado</h3><p>Letras recortadas no policarbonato fumê, retroiluminadas por LED verde. Brilho ajustável e modo apagado para jogar no escuro.</p></div></div>
+        <div class="part"><span class="k">02</span><div><h3>Aletas de alumínio</h3><p>Liga 6063 anodizada em grafite. Dissipam o calor do SoC e do rádio, e as faces usinadas refletem um leve brilho holográfico.</p></div></div>
+        <div class="part"><span class="k">03</span><div><h3>Placa interna</h3><p>SoC ARM de baixo consumo, 64 GB de memória para cache de interface e perfis, e antena Wi-Fi 6E auxiliar.</p></div></div>
+        <div class="part"><span class="k">04</span><div><h3>Conector USB-A</h3><p>Aço inox escovado, USB 3.2 Gen 1. Cabe na porta frontal do PS4, PS4 Slim e PS4 Pro sem bloquear a porta vizinha.</p></div></div>
+        <div class="part"><span class="k">05</span><div><h3>Corpo preto fosco</h3><p>Base em PC/ABS com toque soft-matte que não marca digitais, com um filete de luz de status na borda inferior.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLOW ================= -->
+<section style="background: linear-gradient(180deg, var(--void), #070b09 50%, var(--void));">
+  <div class="wrap">
+    <div class="stack">
+      <p class="eyebrow">Como funciona</p>
+      <h2>O jogo roda no servidor. O Cloud Drive leva você até ele.</h2>
+      <p class="lede">O Cloud Drive é uma chave de acesso, não um console de bolso. Ele não executa jogos pesados sozinho: autentica sua conta, mede a rede e entrega a sessão de streaming do serviço de cloud gaming escolhido.</p>
+    </div>
+
+    <div class="flow">
+      <div class="node"><div class="dot">1</div><h3>Conectar</h3><p>Encaixe o drive na porta USB do PS4 e ligue o console.</p></div>
+      <div class="node"><div class="dot">2</div><h3>Entrar</h3><p>Escolha seu perfil UNTILED e vincule um serviço de cloud gaming compatível.</p></div>
+      <div class="node"><div class="dot">3</div><h3>Otimizar</h3><p>O drive mede latência, jitter e banda e escolhe o servidor e a resolução.</p></div>
+      <div class="node"><div class="dot">4</div><h3>Transmitir</h3><p>O jogo roda na nuvem. O vídeo chega à TV e seus comandos voltam pelo DualShock 4.</p></div>
+      <div class="node"><div class="dot">5</div><h3>Salvar</h3><p>O progresso fica na nuvem e continua em qualquer console com o seu perfil.</p></div>
+    </div>
+
+    <div class="callout">
+      <p class="eyebrow">Nota de realismo</p>
+      <p>Este é um conceito. Hoje o PS4 não executa aplicativos de terceiros a partir de um dispositivo USB, então um produto real exigiria parceria com o fabricante do console e com os serviços de streaming. Qualidade de imagem depende do serviço e da rede: até 4K no PS4 Pro com conexão de 35 Mbps ou mais; até 1080p no PS4 e PS4 Slim.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= UI MOCK ================= -->
+<section>
+  <div class="wrap">
+    <div class="stack">
+      <p class="eyebrow">Interface exclusiva</p>
+      <h2>Sua biblioteca, organizada como você joga.</h2>
+      <p class="lede">Categorias, perfis por jogador e um indicador de rede sempre visível. Toque nas categorias para ver a biblioteca de exemplo mudar.</p>
+    </div>
+
+    <div class="ui">
+      <div class="ui-top">
+        <div class="wordmark">UN<span>T</span>ILED</div>
+        <div class="net"><span>Rede <b>142 Mbps</b></span><span>Ping <b>22 ms</b></span><span>Perda <b>0,0%</b></span></div>
+        <div class="profiles" aria-label="Perfis de jogadores">
+          <span class="avatar on" title="Perfil ativo">RX</span>
+          <span class="avatar">LU</span>
+          <span class="avatar">K9</span>
+          <span class="avatar">+</span>
+        </div>
+      </div>
+      <div class="ui-body">
+        <nav class="cats" id="cats" aria-label="Categorias"></nav>
+        <div class="library">
+          <div class="feature">
+            <svg class="art" viewBox="0 0 840 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03130b"/><stop offset=".7" stop-color="#0b3a22"/><stop offset="1" stop-color="#020403"/></linearGradient>
+                <radialGradient id="fSun" cx=".72" cy=".55" r=".35"><stop offset="0" stop-color="#39ff88" stop-opacity=".7"/><stop offset="1" stop-color="#39ff88" stop-opacity="0"/></radialGradient>
+              </defs>
+              <rect width="840" height="320" fill="url(#fSky)"/>
+              <rect width="840" height="320" fill="url(#fSun)"/>
+              <g fill="#030806">
+                <rect x="0" y="160" width="60" height="160"/><rect x="70" y="120" width="40" height="200"/><rect x="120" y="180" width="80" height="140"/><rect x="210" y="90" width="44" height="230"/><rect x="262" y="150" width="70" height="170"/>
+                <rect x="520" y="110" width="50" height="210"/><rect x="580" y="60" width="36" height="260"/><rect x="626" y="140" width="90" height="180"/><rect x="726" y="100" width="54" height="220"/><rect x="788" y="170" width="52" height="150"/>
+              </g>
+              <path d="M410 320 L440 210 L470 320 Z" fill="#000"/>
+              <circle cx="440" cy="200" r="12" fill="#000"/>
+              <rect x="0" y="300" width="840" height="20" fill="#000" opacity=".8"/>
+            </svg>
+            <div class="meta">
+              <div><small>EM DESTAQUE · NOVO</small><h3>VANTA PROTOCOL</h3></div>
+              <button class="play" type="button" id="playBtn">Jogar agora</button>
+            </div>
+          </div>
+          <div class="row-title"><h3 id="rowTitle">Continuar jogando</h3><span id="rowCount">4 títulos</span></div>
+          <div class="tiles" id="tiles"></div>
+        </div>
+      </div>
+      <div class="ui-foot">
+        <span><span class="btn-glyph">✕</span>Selecionar &nbsp; <span class="btn-glyph">○</span>Voltar &nbsp; <span class="btn-glyph">△</span>Perfil</span>
+        <span id="status">Save sincronizado há 2 min</span>
+      </div>
+    </div>
+    <p style="margin-top:12px;font-size:.78rem;color:var(--muted)">Todos os títulos exibidos são fictícios e servem apenas como exemplo.</p>
+  </div>
+</section>
+
+<!-- ================= SPECS ================= -->
+<section style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="stack">
+      <p class="eyebrow">Ficha técnica · UCD-01</p>
+      <h2>Especificações do conceito</h2>
+    </div>
+    <div class="spec-grid">
+      <div class="box">
+        <p class="lede">Na caixa</p>
+        <div class="box-item"><b>1×</b><span>UNTILED Cloud Drive, preto fosco</span></div>
+        <div class="box-item"><b>1×</b><span>Extensor USB curto de 10 cm para consoles na vertical</span></div>
+        <div class="box-item"><b>1×</b><span>Cordão com ponteira metálica</span></div>
+        <div class="box-item"><b>1×</b><span>Cartão de ativação com código do perfil UNTILED</span></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th>Dimensões</th><td><span class="n">58 × 21 × 9</span> mm</td></tr>
+            <tr><th>Peso</th><td><span class="n">14</span> g</td></tr>
+            <tr><th>Interface</th><td>USB-A, USB 3.2 Gen 1 (<span class="n">5</span> Gbit/s)</td></tr>
+            <tr><th>Processador</th><td>SoC ARM de baixo consumo para interface, autenticação e telemetria de rede</td></tr>
+            <tr><th>Memória</th><td><span class="n">64</span> GB para cache de interface e perfis locais</td></tr>
+            <tr><th>Rede</th><td>Antena Wi-Fi 6E auxiliar; usa a conexão do console como rota principal</td></tr>
+            <tr><th>Resolução</th><td>Até <span class="n">4K</span> no PS4 Pro, até <span class="n">1080p</span> no PS4 e PS4 Slim, sempre conforme o serviço</td></tr>
+            <tr><th>Banda recomendada</th><td><span class="n">15</span> Mbps para 1080p60 · <span class="n">35</span> Mbps para 4K</td></tr>
+            <tr><th>Controles</th><td>DualShock 4 com fio ou Bluetooth</td></tr>
+            <tr><th>Perfis</th><td>Até <span class="n">8</span> jogadores por drive, saves na nuvem</td></tr>
+            <tr><th>Iluminação</th><td>LED verde neon, <span class="n">3</span> níveis + desligado</td></tr>
+            <tr><th>Acabamento</th><td>PC/ABS soft-matte, alumínio 6063 anodizado, aço inox</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OUTRO ================= -->
+<footer class="outro">
+  <div class="wrap" style="padding-block: clamp(64px, 9vw, 120px);">
+    <p class="eyebrow">UNTILED Cloud Drive</p>
+    <h2 style="margin-top:16px">A próxima geração <em>cabe no seu bolso.</em></h2>
+    <p class="legal">UNTILED Cloud Drive é um conceito de produto e não está à venda. Ele é um acessório de acesso a serviços de cloud gaming e não executa jogos pesados de forma independente; todo o processamento dos jogos acontece nos servidores do serviço contratado. PS4, PS4 Slim, PS4 Pro e DualShock 4 são marcas de seus respectivos proprietários e são citados apenas para indicar compatibilidade pretendida; não há afiliação nem endosso. VANTA PROTOCOL e os demais títulos exibidos são fictícios.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- Library mock ---------- */
+  var data = {
+    "Continuar jogando": [
+      ["VANTA PROTOCOL", "4K", "#0b3a22", "#39ff88", "62%"],
+      ["SALT & STATIC", "1080p", "#1b1430", "#c7a6ff", "18%"],
+      ["HOLLOW ORBIT", "4K", "#0a2230", "#8fe9ff", "45%"],
+      ["RUSTLINE GP", "1080p", "#2a1a0c", "#ffb35c", "80%"]
+    ],
+    "Ação": [
+      ["VANTA PROTOCOL", "4K", "#0b3a22", "#39ff88", "Novo"],
+      ["IRON TIDE", "4K", "#21110f", "#ff6b5c", "Popular"],
+      ["NULL SECTOR", "1080p", "#0d1420", "#8fe9ff", "Coop"],
+      ["GLASSJAW", "1080p", "#1d1a10", "#ffe066", "PvP"]
+    ],
+    "Corrida": [
+      ["RUSTLINE GP", "1080p", "#2a1a0c", "#ffb35c", "Online"],
+      ["NEON MERIDIAN", "4K", "#071e18", "#39ff88", "Novo"],
+      ["DUSTBOWL 9", "1080p", "#2b200f", "#f2c47a", "Rally"],
+      ["SKYLANE", "4K", "#0c1730", "#8fe9ff", "Arcade"]
+    ],
+    "RPG": [
+      ["HOLLOW ORBIT", "4K", "#0a2230", "#8fe9ff", "80 h"],
+      ["THE ASHEN CROWN", "4K", "#1e0f14", "#ff8fa3", "60 h"],
+      ["MOSSWAKE", "1080p", "#0e2010", "#9be27a", "35 h"],
+      ["CIPHER SAINTS", "4K", "#16102a", "#c7a6ff", "50 h"]
+    ],
+    "Multijogador": [
+      ["NULL SECTOR", "1080p", "#0d1420", "#8fe9ff", "4 jog."],
+      ["IRON TIDE", "4K", "#21110f", "#ff6b5c", "12 jog."],
+      ["SALT & STATIC", "1080p", "#1b1430", "#c7a6ff", "2 jog."],
+      ["GLASSJAW", "1080p", "#1d1a10", "#ffe066", "8 jog."]
+    ],
+    "Indie": [
+      ["MOSSWAKE", "1080p", "#0e2010", "#9be27a", "Novo"],
+      ["PAPER LANTERNS", "1080p", "#221a0c", "#ffd08a", "Calmo"],
+      ["SALT & STATIC", "1080p", "#1b1430", "#c7a6ff", "Puzzle"],
+      ["LOW ORBIT CAFÉ", "1080p", "#0f1c22", "#8fe9ff", "Sim"]
+    ]
+  };
+  var cats = document.getElementById("cats");
+  var tiles = document.getElementById("tiles");
+  var rowTitle = document.getElementById("rowTitle");
+  var rowCount = document.getElementById("rowCount");
+  var current = "Continuar jogando";
+
+  function cover(bg, accent, i) {
+    var x = 20 + (i * 37) % 60;
+    return "background:" +
+      "radial-gradient(70% 50% at " + x + "% 35%," + accent + "55, transparent 70%)," +
+      "linear-gradient(180deg," + bg + " 0%, #030504 100%)";
+  }
+  function render() {
+    cats.innerHTML = "";
+    Object.keys(data).forEach(function (name) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "cat";
+      b.setAttribute("aria-pressed", name === current ? "true" : "false");
+      b.innerHTML = name + " <span>" + data[name].length + "</span>";
+      b.addEventListener("click", function () { current = name; render(); });
+      cats.appendChild(b);
+    });
+    rowTitle.textContent = current;
+    rowCount.textContent = data[current].length + " títulos";
+    tiles.innerHTML = "";
+    data[current].forEach(function (g, i) {
+      var t = document.createElement("div");
+      t.className = "tile";
+      t.innerHTML = '<div class="cover" style="' + cover(g[2], g[3], i) + '"><b>' + g[0] + '</b></div>' +
+        '<div class="info"><span class="q">' + g[1] + '</span><span>' + g[4] + '</span></div>';
+      tiles.appendChild(t);
+    });
+  }
+  render();
+  document.getElementById("playBtn").addEventListener("click", function () {
+    document.getElementById("status").textContent = "Conectando a VANTA PROTOCOL · servidor São Paulo · 22 ms";
+  });
+
+  /* ---------- TV game scene (fictional) ---------- */
+  var cv = document.getElementById("game");
+  var ctx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function rng(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+  function makeLayer(seed, n, minH, maxH, wMin, wMax) {
+    var r = rng(seed), arr = [], x = 0;
+    while (x < W * 2) {
+      var w = wMin + r() * (wMax - wMin), h = minH + r() * (maxH - minH);
+      var lights = [];
+      for (var k = 0; k < 14; k++) lights.push([r() * w, r() * h, r() > .82]);
+      arr.push({ x: x, w: w, h: h, lights: lights, ant: r() > .7 });
+      x += w + r() * 10;
+    }
+    return arr;
+  }
+  var far = makeLayer(7, 0, 140, 330, 40, 90);
+  var mid = makeLayer(42, 0, 200, 430, 60, 130);
+  var near = makeLayer(99, 0, 260, 520, 90, 170);
+  var rr = rng(3), drops = [];
+  for (var d = 0; d < 220; d++) drops.push([rr() * W, rr() * H, 8 + rr() * 14, .4 + rr() * .6]);
+
+  function drawLayer(layer, offset, base, col, lightCol, alpha) {
+    ctx.save();
+    for (var i = 0; i < layer.length; i++) {
+      var b = layer[i];
+      var x = ((b.x - offset) % (W * 2) + W * 2) % (W * 2) - W * .5;
+      if (x > W || x + b.w < 0) continue;
+      ctx.fillStyle = col;
+      ctx.fillRect(x, base - b.h, b.w, b.h);
+      if (b.ant) { ctx.fillRect(x + b.w / 2 - 1, base - b.h - 30, 2, 30); }
+      for (var j = 0; j < b.lights.length; j++) {
+        var L = b.lights[j];
+        ctx.fillStyle = L[2] ? lightCol : "rgba(143,233,255," + (alpha * .5) + ")";
+        ctx.globalAlpha = L[2] ? alpha : alpha * .6;
+        ctx.fillRect(x + L[0], base - b.h + L[1], 4, 2);
+        ctx.globalAlpha = 1;
+      }
+    }
+    ctx.restore();
+  }
+
+  function frame(t) {
+    var s = t / 1000;
+    // sky
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#020806"); g.addColorStop(.55, "#06301b"); g.addColorStop(.75, "#0a4a2a"); g.addColorStop(1, "#010302");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // glow core / tower
+    var rg = ctx.createRadialGradient(W * .64, H * .52, 10, W * .64, H * .52, 360);
+    rg.addColorStop(0, "rgba(57,255,136,.55)"); rg.addColorStop(1, "rgba(57,255,136,0)");
+    ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#010604"; ctx.fillRect(W * .64 - 14, H * .1, 28, H * .6);
+    ctx.fillStyle = "rgba(57,255,136,.9)"; ctx.fillRect(W * .64 - 2, H * .1, 4, H * .6);
+
+    drawLayer(far, s * 12, H * .74, "#04140c", "#39ff88", .55);
+    drawLayer(mid, s * 30, H * .82, "#020a06", "#8fe9ff", .7);
+    // wet street
+    var sg = ctx.createLinearGradient(0, H * .82, 0, H);
+    sg.addColorStop(0, "#03140b"); sg.addColorStop(1, "#000");
+    ctx.fillStyle = sg; ctx.fillRect(0, H * .82, W, H * .18);
+    for (var k = 0; k < 12; k++) {
+      var lx = ((k * 140 - s * 220) % (W + 140) + W + 140) % (W + 140) - 70;
+      ctx.fillStyle = "rgba(57,255,136,.35)"; ctx.fillRect(lx, H * .9, 70, 3);
+    }
+    drawLayer(near, s * 70, H * 1.02, "#000", "#39ff88", .35);
+
+    // protagonist silhouette on rooftop edge
+    ctx.fillStyle = "#000";
+    var px = W * .3, py = H * .82;
+    ctx.beginPath(); ctx.moveTo(px - 20, py); ctx.lineTo(px - 8, py - 70); ctx.lineTo(px + 8, py - 70); ctx.lineTo(px + 22, py); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(px, py - 84, 13, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(px - 8, py - 66); ctx.lineTo(px - 46, py - 30 + Math.sin(s * 2) * 6); ctx.lineTo(px - 40, py - 24); ctx.lineTo(px - 4, py - 58); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#39ff88"; ctx.fillRect(px + 2, py - 88, 9, 3);
+
+    // rain
+    ctx.strokeStyle = "rgba(180,255,215,.22)"; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var i = 0; i < drops.length; i++) {
+      var dr = drops[i];
+      var y = (dr[1] + s * 600 * dr[3]) % H, x = (dr[0] - s * 80 * dr[3] + W) % W;
+      ctx.moveTo(x, y); ctx.lineTo(x - 3, y + dr[2]);
+    }
+    ctx.stroke();
+
+    // HUD
+    ctx.font = "600 22px Unbounded, Arial Black, sans-serif";
+    ctx.fillStyle = "#e9f1ec"; ctx.fillText("VANTA PROTOCOL", 48, 64);
+    ctx.font = "15px JetBrains Mono, monospace";
+    ctx.fillStyle = "#8fe9ff"; ctx.fillText("SETOR 07 · DISTRITO VERDE", 48, 90);
+    // health bar
+    ctx.fillStyle = "rgba(255,255,255,.12)"; ctx.fillRect(48, H - 70, 260, 8);
+    ctx.fillStyle = "#39ff88"; ctx.fillRect(48, H - 70, 190, 8);
+    ctx.fillStyle = "#e9f1ec"; ctx.fillText("INTEGRIDADE 73%", 48, H - 82);
+    // objective
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#e9f1ec"; ctx.fillText("OBJETIVO · ALCANÇAR A TORRE", W - 48, 64);
+    ctx.fillStyle = "#39ff88"; ctx.fillText("412 m", W - 48, 90);
+    // stream overlay
+    ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(W - 300, H - 98, 252, 50);
+    ctx.fillStyle = "#39ff88"; ctx.fillText("● UNTILED STREAM", W - 64, H - 76);
+    ctx.fillStyle = "#8a9a92"; ctx.fillText("1080p60 · 22 ms · 18 Mbps", W - 64, H - 56);
+    ctx.textAlign = "left";
+    // scanline vignette
+    var vg = ctx.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, W * .7);
+    vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.55)");
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  function start() { requestAnimationFrame(frame); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+})();
+</script>
